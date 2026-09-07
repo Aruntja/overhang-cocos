@@ -40,37 +40,10 @@
             }
           },
           "children": {
-            "BlocksContainer": {
-              "children": {
-                "BlockFloor": {
-                  "prefab": "assets/prefabs/blocks/BlockFloor.prefab"
-                }
-              }
-            },
-            "SwingContainer": {
-              "children": {
-                "Swing": {
-                  "prefab": "assets/prefabs/blocks/BlockSwing.prefab",
-                  "children": {
-                    "RopeNode": {}
-                  }
-                }
-              }
-            },
-            "DebrisContainer": {
-              "children": {
-                "DebrisSample": {
-                  "prefab": "assets/prefabs/effects/Debris.prefab"
-                }
-              }
-            },
-            "ParticlesContainer": {
-              "children": {
-                "ParticleSample": {
-                  "prefab": "assets/prefabs/effects/Particle.prefab"
-                }
-              }
-            }
+            "BlocksContainer": {},
+            "SwingContainer": {},
+            "DebrisContainer": {},
+            "ParticlesContainer": {}
           }
         },
         "UILayer": {

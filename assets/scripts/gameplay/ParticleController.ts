@@ -22,6 +22,11 @@ export class ParticleController extends Component {
   }
 
   protected onLoad(): void {
+    this.refreshPalette();
+    this.registrationHook?.(this);
+  }
+
+  public refreshPalette(): void {
     if (!this.particleSprite) {
       this.particleSprite = this.getComponent(Sprite);
     }
@@ -29,7 +34,6 @@ export class ParticleController extends Component {
       const tint = this.useDustPalette ? COLOR_SCHEME.neon.yellow : COLOR_SCHEME.neon.cyan;
       this.particleSprite.color = colorFromHex(tint);
     }
-    this.registrationHook?.(this);
   }
 
   public launch(origin: Vec3, upOffset: Vec3, downOffset: Vec3): void {

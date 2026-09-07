@@ -251,7 +251,7 @@ export class GameManager extends Component {
     if (!belowBlock) return;
     const centerOffset = Math.abs(this.activeFall.body.x - belowBlock.model.x);
     const maxCenterOffset = GAME_CONSTANTS.blockSize * GAME_CONSTANTS.collisionAlignmentFraction;
-    const shouldCollapse = nextHeight >= this.roundData.collapseStep || centerOffset > maxCenterOffset;
+    const shouldCollapse = nextHeight > this.roundData.collapseStep || centerOffset > maxCenterOffset;
 
     if (shouldCollapse) {
       this.spawnDebrisBurst(this.activeFall.controller.node.position.clone());
@@ -377,29 +377,19 @@ export class GameManager extends Component {
 
   private createBlockController(prefab: Prefab | null, parent: Node | null, isFloor: boolean): BlockController | null {
     const node = prefab ? instantiate(prefab) : this.createFallbackBlockNode(isFloor);
-    let registeredController: BlockController | null = null;
     const controller = node.getComponent(BlockController) ?? node.addComponent(BlockController);
-    controller.setRegistrationHook((instance) => {
-      registeredController = instance;
-    });
     parent?.addChild(node);
-    const resolvedController = registeredController ?? controller;
-    resolvedController.initialize(this.animationManager, isFloor);
-    return resolvedController;
+    controller.initialize(this.animationManager, isFloor);
+    return controller;
   }
 
   private createSwingController(): SwingController | null {
     if (!this.swingContainer) return null;
     const node = this.blockSwingPrefab ? instantiate(this.blockSwingPrefab) : this.createFallbackSwingNode();
-    let registeredController: SwingController | null = null;
     const controller = node.getComponent(SwingController) ?? node.addComponent(SwingController);
-    controller.setRegistrationHook((instance) => {
-      registeredController = instance;
-    });
     this.swingContainer.addChild(node);
-    const resolvedController = registeredController ?? controller;
-    resolvedController.initialize(this.animationManager);
-    return resolvedController;
+    controller.initialize(this.animationManager);
+    return controller;
   }
 
   private spawnDebrisBurst(origin: Vec3): void {
@@ -447,27 +437,20 @@ export class GameManager extends Component {
   private createDebrisController(): DebrisController | null {
     if (!this.debrisContainer) return null;
     const node = this.debrisPrefab ? instantiate(this.debrisPrefab) : this.createFallbackEffectNode('Debris');
-    let registeredController: DebrisController | null = null;
     const controller = node.getComponent(DebrisController) ?? node.addComponent(DebrisController);
-    controller.setRegistrationHook((instance) => {
-      registeredController = instance;
-    });
     this.debrisContainer.addChild(node);
-    return registeredController ?? controller;
+    return controller;
   }
 
   private createParticleController(useDustPalette: boolean): ParticleController | null {
     if (!this.particlesContainer) return null;
     const prefab = useDustPalette ? (this.dustCloudPrefab ?? this.particlePrefab) : this.particlePrefab;
     const node = prefab ? instantiate(prefab) : this.createFallbackEffectNode('Particle');
-    let registeredController: ParticleController | null = null;
     const controller = node.getComponent(ParticleController) ?? node.addComponent(ParticleController);
     controller.useDustPalette = useDustPalette;
-    controller.setRegistrationHook((instance) => {
-      registeredController = instance;
-    });
     this.particlesContainer.addChild(node);
-    return registeredController ?? controller;
+    controller.refreshPalette();
+    return controller;
   }
 
   private createFallbackBlockNode(isFloor: boolean): Node {
