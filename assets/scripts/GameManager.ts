@@ -154,34 +154,36 @@ export class GameManager extends Component {
     }
 
     const priorState = this.state;
-    if (priorState === GameState.RESULT) {
-      this.resetTower();
-    }
     this.state = GameState.CONNECTING;
     this.uiManager?.lockControls(true);
     this.uiManager?.showToast('Connecting...');
     try {
       await this.backend.connect();
       this.round = this.backend.createRound(this.difficulty);
+      if (!this.spawnSwing(true)) {
+        throw new Error('Failed to spawn swing');
+      }
       this.balance -= this.bet;
       this.persistBalance();
       this.uiManager?.updateBalance(this.balance);
       this.uiManager?.lockControls(false);
       this.uiManager?.setRoundConfigLocked(true);
-      this.spawnSwing(true);
       this.state = GameState.SWINGING;
     } catch (_error) {
       this.state = priorState === GameState.RESULT ? GameState.START : priorState;
+      this.resetTower();
       this.uiManager?.lockControls(false);
+      this.uiManager?.setRoundConfigLocked(false);
       this.uiManager?.showToast('Connection failed');
     }
   }
 
-  private spawnSwing(withIntro: boolean): void {
-    if (!this.gameLayer || !this.swingPrefab) return;
+  private spawnSwing(withIntro: boolean): boolean {
+    if (!this.gameLayer || !this.swingPrefab) return false;
     if (this.swingNode?.isValid) this.swingNode.destroy();
     this.swingNode = null;
     const top = this.blocks[this.blocks.length - 1];
+    if (!top) return false;
     const targetY = top.worldY + GAME_CONSTANTS.SWING_GAP_ABOVE;
 
     this.swingNode = instantiate(this.swingPrefab);
@@ -196,6 +198,7 @@ export class GameManager extends Component {
         .to(0.5, { position: new Vec3(0, targetY, 0) }, { easing: 'quadOut' })
         .start();
     }
+    return true;
   }
 
   public tryDrop(): void {

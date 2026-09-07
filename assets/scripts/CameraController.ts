@@ -35,7 +35,8 @@ export class CameraController extends Component {
   public calculateTargetYForTop(topBlockY: number, blockSize: number): number {
     const layerHeight =
       this.gameLayer?.getComponent(UITransform)?.contentSize.height || view.getDesignResolutionSize().height;
-    const anchorY = layerHeight * GAME_CONSTANTS.CAMERA_FRAME_FRACTION;
+    const halfViewport = layerHeight * 0.5;
+    const anchorY = halfViewport * GAME_CONSTANTS.CAMERA_FRAME_FRACTION;
     return Math.max(0, topBlockY - anchorY + blockSize * 0.5);
   }
 

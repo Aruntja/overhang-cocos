@@ -22,7 +22,7 @@ Neon Stack game - Cocos Creator implementation of the crash tower stacking game.
 
 ## Node setup instructions (Cocos Creator)
 
-1. Create/open a Cocos Creator 3.x project and copy the `assets` folder from this repository.
+1. Create/open a **Cocos Creator 3.8.x** project and copy the `assets` folder from this repository.
 2. Set design resolution to **1080x1920 portrait** on Canvas:
    - Fit Width: `true`
    - Fit Height: `true`
