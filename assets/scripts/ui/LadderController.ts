@@ -28,7 +28,7 @@ export class LadderController extends Component {
       const ladderIndex = startIndex + index;
       const value = model.ladder[ladderIndex];
       const prefix = ladderIndex === activeIndex ? '> ' : '  ';
-      label.string = value ? `${prefix}${ladderIndex + 1}. ${value.toFixed(2)}x` : `${prefix}${ladderIndex + 1}. --`;
+      label.string = value !== undefined ? `${prefix}${ladderIndex + 1}. ${value.toFixed(2)}x` : `${prefix}${ladderIndex + 1}. --`;
     });
   }
 }

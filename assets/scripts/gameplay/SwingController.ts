@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Vec3 } from 'cc';
+import { _decorator, Component, Node, UITransform, Vec3 } from 'cc';
 import { AnimationManager } from '../services/AnimationManager';
 import { GAME_CONSTANTS } from '../utils/Constants';
 import { DropSnapshot } from '../utils/Types';
@@ -47,7 +47,10 @@ export class SwingController extends Component {
     }
 
     if (this.ropeNode) {
-      this.ropeNode.setScale(new Vec3(1, this.ropeLength, 1));
+      this.ropeNode.setPosition(0, -this.ropeLength * 0.5, 0);
+      const ropeTransform = this.ropeNode.getComponent(UITransform) ?? this.ropeNode.addComponent(UITransform);
+      ropeTransform.setContentSize(ropeTransform.contentSize.width, this.ropeLength);
+      this.ropeNode.setScale(new Vec3(1, 1, 1));
     }
   }
 

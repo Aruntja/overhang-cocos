@@ -311,7 +311,12 @@ export class GameManager extends Component {
       this.activeSwing = null;
     }
     this.roundData = null;
-    await wait(GAME_CONSTANTS.resultFallbackDelayMs + GAME_CONSTANTS.resultResetDelayMs);
+    if (this.uiManager) {
+      await this.uiManager.waitForRoundPresentation();
+      await wait(GAME_CONSTANTS.resultResetDelayMs);
+    } else {
+      await wait(GAME_CONSTANTS.resultFallbackDelayMs + GAME_CONSTANTS.resultResetDelayMs);
+    }
     this.resetRound();
   }
 

@@ -46,6 +46,7 @@ export class UIManager extends Component {
 
   private animationManager: AnimationManager | null = null;
   private actions: UIActions | null = null;
+  private lastResultPresentation: Promise<void> = Promise.resolve();
   private uiModel: UIModel = {
     balance: GAME_CONFIG.defaultBalance,
     bestHeight: 0,
@@ -80,7 +81,7 @@ export class UIManager extends Component {
     bus.on(GAME_EVENTS.roundStarted, (payload) => this.handleRoundStarted(payload), this);
     bus.on(GAME_EVENTS.blockPlaced, (payload) => this.handleBlockPlaced(payload), this);
     bus.on(GAME_EVENTS.roundEnded, (payload) => {
-      void this.handleRoundEnded(payload);
+      this.lastResultPresentation = this.handleRoundEnded(payload);
     }, this);
   }
 
@@ -107,6 +108,10 @@ export class UIManager extends Component {
     this.hudController?.setDifficultyLabel(difficulty);
     this.controlBarController?.setDifficultyLabel(difficulty);
     this.refreshAll();
+  }
+
+  public waitForRoundPresentation(): Promise<void> {
+    return this.lastResultPresentation;
   }
 
   private handleRoundStarted(payload: RoundStartedPayload): void {
