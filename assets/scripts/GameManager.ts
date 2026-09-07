@@ -5,6 +5,7 @@ import {
   Node,
   Prefab,
   Sprite,
+  Label,
   UITransform,
   Vec3,
   Color,
@@ -97,6 +98,10 @@ export class GameManager extends Component {
       rb.name = 'ResultBanner';
       rb.setPosition(0, 720, 0);
       this.uiLayer.addChild(rb);
+      if (this.uiManager) {
+        this.uiManager.resultBanner = rb;
+        this.uiManager.resultBannerLabel = rb.getComponentInChildren(Label);
+      }
     }
 
     if (this.controlBarPrefab && !this.uiLayer.getChildByName('ControlBar')) {
@@ -104,6 +109,7 @@ export class GameManager extends Component {
       bar.name = 'ControlBar';
       bar.setPosition(0, -860, 0);
       this.uiLayer.addChild(bar);
+      if (this.uiManager) this.uiManager.controlBar = bar;
     }
   }
 

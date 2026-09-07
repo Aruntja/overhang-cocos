@@ -38,7 +38,7 @@ Neon Stack game - Cocos Creator implementation of the crash tower stacking game.
    - `BackendService` on `Canvas`
    - `UIManager` on `UILayer` and bind HUD/multiplier/payout/toast/result/cashout/control nodes
 5. Create prefab nodes using the provided prefab specs:
-   - `Block`: 150x150 sprite, base/floor colors, box collision shape
+   - `Block`: 150x150 sprite, base/floor colors, and optional collision metadata (landing logic is script-driven)
    - `Swing`: 150x150 block + rope child (`ROPE_LENGTH_PX=200`)
    - `Debris`: small sprite chunks with velocity, spin, lifetime
    - `Particle`: small neon sprite with velocity/fade

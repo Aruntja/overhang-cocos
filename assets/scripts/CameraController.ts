@@ -1,4 +1,4 @@
-import { _decorator, Camera, Component, Node, Vec3, view } from 'cc';
+import { _decorator, Camera, Component, Node, UITransform, Vec3, view } from 'cc';
 import { GAME_CONSTANTS } from './GameConstants';
 
 const { ccclass, property } = _decorator;
@@ -33,8 +33,9 @@ export class CameraController extends Component {
   }
 
   public calculateTargetYForTop(topBlockY: number, blockSize: number): number {
-    const visibleHeight = view.getVisibleSize().height;
-    const anchorY = visibleHeight * GAME_CONSTANTS.CAMERA_FRAME_FRACTION;
+    const layerHeight =
+      this.gameLayer?.getComponent(UITransform)?.contentSize.height || view.getDesignResolutionSize().height;
+    const anchorY = layerHeight * GAME_CONSTANTS.CAMERA_FRAME_FRACTION;
     return Math.max(0, topBlockY - anchorY + blockSize * 0.5);
   }
 
