@@ -26,7 +26,7 @@ Neon Stack game - Cocos Creator implementation of the crash tower stacking game.
 2. Set design resolution to **1080x1920 portrait** on Canvas:
    - Fit Width: `true`
    - Fit Height: `true`
-   - Policy: fixed portrait aspect behavior (matching `GameScene.scene`).
+   - Policy: `FIXED_HEIGHT` (matching `GameScene.scene`).
 3. Build the `GameScene` hierarchy:
    - `Canvas`
      - `GameLayer` (world/tower, camera target container)

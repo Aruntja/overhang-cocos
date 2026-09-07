@@ -148,6 +148,9 @@ export class GameManager extends Component {
     }
 
     const priorState = this.state;
+    if (priorState === GameState.RESULT) {
+      this.resetTower();
+    }
     this.state = GameState.CONNECTING;
     this.uiManager?.lockControls(true);
     this.uiManager?.showToast('Connecting...');
@@ -301,6 +304,10 @@ export class GameManager extends Component {
   private async finishRound(win: boolean, payout = 0): Promise<void> {
     this.state = GameState.RESULT;
     this.round = null;
+    if (this.swingNode?.isValid) this.swingNode.destroy();
+    this.swingNode = null;
+    if (this.fallingNode?.isValid) this.fallingNode.destroy();
+    this.fallingNode = null;
 
     if (!win) {
       await this.demolishTower();

@@ -109,7 +109,14 @@ export class UIManager extends Component {
         .to(0.2, { scale: new Vec3(1, 1, 1) })
         .delay(1.2)
         .to(0.16, { scale: new Vec3(0.92, 0.92, 1) })
-        .call(resolve)
+        .start();
+      tween(opacity)
+        .delay(1.35)
+        .to(0.14, { opacity: 0 })
+        .call(() => {
+          if (this.resultBanner) this.resultBanner.active = false;
+          resolve();
+        })
         .start();
     });
   }
