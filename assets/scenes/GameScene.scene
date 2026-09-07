@@ -24,8 +24,8 @@
           "debrisPrefab": "assets/prefabs/effects/Debris.prefab",
           "particlePrefab": "assets/prefabs/effects/Particle.prefab",
           "dustCloudPrefab": "assets/prefabs/effects/DustCloud.prefab",
-          "cameraController": "Canvas/GameLayer",
-          "uiManager": "Canvas/UILayer"
+          "cameraController": "Canvas/GameLayer:CameraController",
+          "uiManager": "Canvas/UILayer:UIManager"
         }
       },
       "children": {
@@ -49,33 +49,34 @@
         "UILayer": {
           "position": [0, 0, 0],
           "size": [1080, 1920],
-          "components": ["UIManager"],
-          "inspector": {
-            "script": "assets/scripts/ui/UIManager.ts",
-            "properties": {
-              "hudController": "Canvas/UILayer/TopPanel",
-              "controlBarController": "Canvas/UILayer/BottomPanel/ControlBar",
-              "ladderController": "Canvas/UILayer/LeftPanel/LadderDisplay",
-              "cashOutButton": "Canvas/UILayer/BottomPanel/CashOutButton",
-              "resultBanner": "Canvas/UILayer/ResultBanner",
-              "resultBannerLabel": "Canvas/UILayer/ResultBanner/Message"
+          "components": ["UIManager", "HUDController"],
+          "inspectors": {
+            "UIManager": {
+              "script": "assets/scripts/ui/UIManager.ts",
+              "properties": {
+                "hudController": "Canvas/UILayer:HUDController",
+                "controlBarController": "Canvas/UILayer/BottomPanel/ControlBar:ControlBarController",
+                "ladderController": "Canvas/UILayer/LeftPanel/LadderDisplay:LadderController",
+                "cashOutButton": "Canvas/UILayer/BottomPanel/CashOutButton:Button",
+                "resultBanner": "Canvas/UILayer/ResultBanner",
+                "resultBannerLabel": "Canvas/UILayer/ResultBanner/Message:Label"
+              }
+            },
+            "HUDController": {
+              "script": "assets/scripts/ui/HUDController.ts",
+              "properties": {
+                "heightLabel": "Canvas/UILayer/TopPanel/HeightPill/Label:Label",
+                "balanceLabel": "Canvas/UILayer/TopPanel/BalancePill/Label:Label",
+                "multiplierLabel": "Canvas/UILayer/CenterDisplay/MultiplierText:Label",
+                "payoutLabel": "Canvas/UILayer/CenterDisplay/PayoutText:Label",
+                "toastNode": "Canvas/UILayer/CenterDisplay/ToastNotification",
+                "toastLabel": "Canvas/UILayer/CenterDisplay/ToastNotification/Label:Label"
+              }
             }
           },
           "children": {
             "TopPanel": {
               "prefab": "assets/prefabs/ui/HUDPanel.prefab",
-              "components": ["HUDController"],
-              "inspector": {
-                "script": "assets/scripts/ui/HUDController.ts",
-                "properties": {
-                  "heightLabel": "Canvas/UILayer/TopPanel/HeightPill/Label",
-                  "balanceLabel": "Canvas/UILayer/TopPanel/BalancePill/Label",
-                  "multiplierLabel": "Canvas/UILayer/CenterDisplay/MultiplierText",
-                  "payoutLabel": "Canvas/UILayer/CenterDisplay/PayoutText",
-                  "toastNode": "Canvas/UILayer/CenterDisplay/ToastNotification",
-                  "toastLabel": "Canvas/UILayer/CenterDisplay/ToastNotification/Label"
-                }
-              },
               "children": {
                 "HeightPill": {
                   "children": {
@@ -119,14 +120,28 @@
                     "StatsRow": {},
                     "SteppersRow": {
                       "children": {
-                        "BetStepper": {},
-                        "DifficultyStepper": {}
+                        "BetStepper": {
+                          "children": {
+                            "Label": {}
+                          }
+                        },
+                        "DifficultyStepper": {
+                          "children": {
+                            "Label": {}
+                          }
+                        }
                       }
                     },
-                    "ActionButton": {}
+                    "ActionButton": {
+                      "children": {
+                        "Label": {}
+                      }
+                    }
                   }
                 },
-                "CashOutButton": {}
+                "CashOutButton": {
+                  "components": ["Button"]
+                }
               }
             },
             "ResultBanner": {

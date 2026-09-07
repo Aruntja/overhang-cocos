@@ -12,5 +12,17 @@
     "Row06": { "components": ["Label"] },
     "Row07": { "components": ["Label"] },
     "Row08": { "components": ["Label"] }
+  },
+  "properties": {
+    "rowLabels": [
+      "Row01:Label",
+      "Row02:Label",
+      "Row03:Label",
+      "Row04:Label",
+      "Row05:Label",
+      "Row06:Label",
+      "Row07:Label",
+      "Row08:Label"
+    ]
   }
 }

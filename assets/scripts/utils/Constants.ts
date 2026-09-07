@@ -32,6 +32,7 @@ export const GAME_CONSTANTS = {
   swingSpawnOffsetY: 220,
   swingAmplitudeFraction: 0.18,
   swingRopeLength: 200,
+  swingRopeWidth: 8,
   gravity: 2600,
   baseSwingSpeed: 1.7,
   maxSwingAngleRadians: 0.3,

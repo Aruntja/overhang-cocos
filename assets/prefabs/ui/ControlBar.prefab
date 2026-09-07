@@ -7,10 +7,28 @@
     "StatsRow": {},
     "SteppersRow": {
       "children": {
-        "BetStepper": {},
-        "DifficultyStepper": {}
+        "BetStepper": {
+          "children": {
+            "Label": { "components": ["Label"] }
+          }
+        },
+        "DifficultyStepper": {
+          "children": {
+            "Label": { "components": ["Label"] }
+          }
+        }
       }
     },
-    "ActionButton": { "components": ["Button", "Label"] }
+    "ActionButton": {
+      "components": ["Button"],
+      "children": {
+        "Label": { "components": ["Label"] }
+      }
+    }
+  },
+  "properties": {
+    "betLabel": "SteppersRow/BetStepper/Label",
+    "difficultyLabel": "SteppersRow/DifficultyStepper/Label",
+    "actionButton": "ActionButton:Button"
   }
 }

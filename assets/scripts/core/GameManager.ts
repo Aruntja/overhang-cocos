@@ -134,10 +134,13 @@ export class GameManager extends Component {
     this.transitionTo(GAME_STATES.CONNECTING);
     this.uiManager?.showToast('Connecting...');
 
+    let deductedBet = false;
+
     try {
       await this.backendService.connect();
       this.roundData = this.backendService.createRound(this.difficulty);
       this.balance -= this.bet;
+      deductedBet = true;
       this.storageService.setBalance(this.balance);
       this.eventBus.emit(GAME_EVENTS.roundStarted, {
         difficulty: this.difficulty,
@@ -152,6 +155,10 @@ export class GameManager extends Component {
       this.soundManager.play('round-start');
       this.transitionTo(GAME_STATES.SWINGING);
     } catch (_error) {
+      if (deductedBet) {
+        await this.handleRoundSetupFailure('Round setup failed', true);
+        return;
+      }
       this.transitionTo(GAME_STATES.IDLE);
       this.uiManager?.showToast('Connection failed');
     }
@@ -204,6 +211,10 @@ export class GameManager extends Component {
   }
 
   private async spawnSwing(withIntro: boolean): Promise<boolean> {
+    if (this.activeSwing) {
+      this.activeSwing.node.destroy();
+      this.activeSwing = null;
+    }
     const belowBlock = this.stackBlocks[this.stackBlocks.length - 1];
     if (!belowBlock) return false;
     const targetY = belowBlock.model.y + GAME_CONSTANTS.swingGapAbove;
@@ -287,8 +298,30 @@ export class GameManager extends Component {
       this.uiManager?.showToast(`FLOOR ${this.currentHeight}!`);
     }
     this.spawnParticles(landedController.node.position.clone());
-    await this.spawnSwing(false);
+    const hasSwing = await this.spawnSwing(false);
+    if (!hasSwing) {
+      await this.handleRoundSetupFailure('Next swing failed to spawn', true);
+      return;
+    }
     this.transitionTo(GAME_STATES.SWINGING);
+  }
+
+  private async handleRoundSetupFailure(message: string, refundBet: boolean): Promise<void> {
+    if (refundBet) {
+      this.balance += this.bet;
+      this.storageService.setBalance(this.balance);
+    }
+    if (this.activeSwing) {
+      this.activeSwing.node.destroy();
+      this.activeSwing = null;
+    }
+    if (this.activeFall) {
+      this.activeFall.controller.node.destroy();
+      this.activeFall = null;
+    }
+    this.roundData = null;
+    this.resetRound();
+    this.uiManager?.showToast(message);
   }
 
   private async finishRound(win: boolean, payout: number): Promise<void> {
@@ -466,7 +499,7 @@ export class GameManager extends Component {
     const node = new Node('BlockSwing');
     node.addComponent(UITransform).setContentSize(GAME_CONSTANTS.blockSize, GAME_CONSTANTS.blockSize + GAME_CONSTANTS.swingRopeLength);
     const ropeNode = new Node('RopeNode');
-    ropeNode.addComponent(UITransform).setContentSize(8, GAME_CONSTANTS.swingRopeLength);
+    ropeNode.addComponent(UITransform).setContentSize(GAME_CONSTANTS.swingRopeWidth, GAME_CONSTANTS.swingRopeLength);
     ropeNode.addComponent(Sprite).color = colorFromHex(COLOR_SCHEME.neon.white);
     const payloadNode = new Node('PayloadNode');
     payloadNode.addComponent(UITransform).setContentSize(GAME_CONSTANTS.blockSize, GAME_CONSTANTS.blockSize);

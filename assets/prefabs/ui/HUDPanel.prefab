@@ -1,8 +1,7 @@
 {
   "name": "HUDPanel",
   "size": [1080, 240],
-  "components": ["UITransform", "HUDController"],
-  "script": "assets/scripts/ui/HUDController.ts",
+  "components": ["UITransform"],
   "children": {
     "HeightPill": {
       "components": ["Sprite", "UITransform"],

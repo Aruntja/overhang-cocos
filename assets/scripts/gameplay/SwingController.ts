@@ -49,7 +49,7 @@ export class SwingController extends Component {
     if (this.ropeNode) {
       this.ropeNode.setPosition(0, -this.ropeLength * 0.5, 0);
       const ropeTransform = this.ropeNode.getComponent(UITransform) ?? this.ropeNode.addComponent(UITransform);
-      ropeTransform.setContentSize(ropeTransform.contentSize.width, this.ropeLength);
+      ropeTransform.setContentSize(GAME_CONSTANTS.swingRopeWidth, this.ropeLength);
       this.ropeNode.setScale(new Vec3(1, 1, 1));
     }
   }
