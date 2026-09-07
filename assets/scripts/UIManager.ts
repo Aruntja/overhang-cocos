@@ -1,4 +1,4 @@
-import { _decorator, Component, Label, Node, ScrollView, tween, UIOpacity, Vec3 } from 'cc';
+import { _decorator, Component, Label, Node, ScrollView, Tween, tween, UIOpacity, Vec3 } from 'cc';
 import { DifficultyKey } from './GameConstants';
 
 const { ccclass, property } = _decorator;
@@ -74,6 +74,8 @@ export class UIManager extends Component {
     this.toastNode.active = true;
 
     const opacity = this.toastNode.getComponent(UIOpacity) || this.toastNode.addComponent(UIOpacity);
+    Tween.stopAllByTarget(this.toastNode);
+    Tween.stopAllByTarget(opacity);
     this.toastNode.setScale(new Vec3(0.9, 0.9, 1));
     this.toastNode.setPosition(0, 0, 0);
     opacity.opacity = 0;
@@ -104,13 +106,13 @@ export class UIManager extends Component {
     this.resultBannerLabel.string = win ? `WIN +${amount.toFixed(2)}` : 'BUST';
 
     await new Promise<void>((resolve) => {
-      tween(opacity).to(0.2, { opacity: 255 }).start();
       tween(this.resultBanner)
         .to(0.2, { scale: new Vec3(1, 1, 1) })
         .delay(1.2)
         .to(0.16, { scale: new Vec3(0.92, 0.92, 1) })
         .start();
       tween(opacity)
+        .to(0.2, { opacity: 255 })
         .delay(1.35)
         .to(0.14, { opacity: 0 })
         .call(() => {

@@ -33,7 +33,7 @@ export class CameraController extends Component {
   }
 
   public calculateTargetYForTop(topBlockY: number, blockSize: number): number {
-    const visibleHeight = view.getDesignResolutionSize().height;
+    const visibleHeight = view.getVisibleSize().height;
     const anchorY = visibleHeight * GAME_CONSTANTS.CAMERA_FRAME_FRACTION;
     return Math.max(0, topBlockY - anchorY + blockSize * 0.5);
   }

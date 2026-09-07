@@ -313,10 +313,14 @@ export class GameManager extends Component {
       await this.demolishTower();
     }
 
-    await this.uiManager?.showResult(win, payout);
-    this.uiManager?.setCashOutVisible(false);
-    this.uiManager?.setRoundConfigLocked(false);
-    this.uiManager?.lockControls(false);
+    if (this.uiManager) {
+      await this.uiManager.showResult(win, payout);
+      this.uiManager.setCashOutVisible(false);
+      this.uiManager.setRoundConfigLocked(false);
+      this.uiManager.lockControls(false);
+    } else {
+      await new Promise<void>((resolve) => setTimeout(resolve, 750));
+    }
     this.resetTower();
   }
 
@@ -343,6 +347,10 @@ export class GameManager extends Component {
   private createBlockNode(isBase: boolean): Node {
     if (this.blockPrefab) {
       const node = instantiate(this.blockPrefab);
+      const sprite = node.getComponent(Sprite);
+      if (sprite) {
+        sprite.color = new Color().fromHEX(isBase ? '#8a3226' : '#c8493c');
+      }
       this.gameLayer?.addChild(node);
       return node;
     }
