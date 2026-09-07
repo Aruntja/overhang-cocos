@@ -1,0 +1,30 @@
+{
+  "scene": "GameScene",
+  "designResolution": { "width": 1080, "height": 1920, "policy": "FIXED_HEIGHT", "fitWidth": true, "fitHeight": true },
+  "hierarchy": {
+    "Canvas": {
+      "size": [1080, 1920],
+      "children": {
+        "GameLayer": { "position": [0, 0, 0], "size": [1080, 1920] },
+        "UILayer": {
+          "position": [0, 0, 0],
+          "size": [1080, 1920],
+          "children": {
+            "HUD_Left_Height": { "position": [-430, 880, 0] },
+            "HUD_Right_Balance": { "position": [430, 880, 0] },
+            "MultiplierDisplay": { "position": [0, 820, 0] },
+            "PayoutDisplay": { "position": [0, 760, 0] },
+            "Toast": { "position": [0, 250, 0] },
+            "ResultBanner": { "position": [0, 720, 0] },
+            "MultiplierLadder": { "position": [-480, 200, 0], "visibleItems": 8 },
+            "LadderControlUp": { "position": [-480, 560, 0] },
+            "LadderControlDown": { "position": [-480, -160, 0] },
+            "CashOutButton": { "position": [0, -700, 0] },
+            "ControlBar": { "position": [0, -860, 0], "height": 200 }
+          }
+        }
+      }
+    }
+  },
+  "entryScript": "assets/scripts/GameManager.ts"
+}

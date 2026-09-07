@@ -1,0 +1,11 @@
+{
+  "name": "Block",
+  "size": [150, 150],
+  "components": ["Sprite", "UITransform"],
+  "properties": {
+    "isBase": false,
+    "squash": 1,
+    "rotation": 0,
+    "collision": "box"
+  }
+}
