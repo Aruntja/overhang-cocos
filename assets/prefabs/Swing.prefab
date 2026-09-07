@@ -1,8 +1,0 @@
-{
-  "name": "Swing",
-  "size": [150, 150],
-  "ropeLengthPx": 200,
-  "components": ["Sprite", "UITransform"],
-  "children": ["Rope"],
-  "animations": ["intro_down_0_5s", "rotation_pendulum"]
-}

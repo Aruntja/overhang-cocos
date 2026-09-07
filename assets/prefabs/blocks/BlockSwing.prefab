@@ -1,0 +1,21 @@
+{
+  "name": "BlockSwing",
+  "size": [150, 350],
+  "components": ["UITransform", "SwingController"],
+  "script": "assets/scripts/gameplay/SwingController.ts",
+  "children": {
+    "RopeNode": {
+      "size": [8, 200],
+      "components": ["Sprite", "UITransform"]
+    },
+    "PayloadNode": {
+      "size": [150, 150],
+      "components": ["Sprite", "UITransform"]
+    }
+  },
+  "properties": {
+    "ropeNode": "RopeNode",
+    "payloadNode": "PayloadNode",
+    "ropeLength": 200
+  }
+}

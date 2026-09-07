@@ -1,0 +1,16 @@
+{
+  "name": "ControlBar",
+  "size": [1080, 220],
+  "components": ["Sprite", "UITransform", "ControlBarController"],
+  "script": "assets/scripts/ui/ControlBarController.ts",
+  "children": {
+    "StatsRow": {},
+    "SteppersRow": {
+      "children": {
+        "BetStepper": {},
+        "DifficultyStepper": {}
+      }
+    },
+    "ActionButton": { "components": ["Button", "Label"] }
+  }
+}

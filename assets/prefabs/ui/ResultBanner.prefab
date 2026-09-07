@@ -1,0 +1,9 @@
+{
+  "name": "ResultBanner",
+  "size": [560, 180],
+  "components": ["Sprite", "UITransform", "Label", "UIOpacity"],
+  "children": {
+    "Message": { "components": ["Label"] }
+  },
+  "animations": ["result-banner-scale-fade"]
+}

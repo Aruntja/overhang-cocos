@@ -1,0 +1,10 @@
+{
+  "name": "Particle",
+  "size": [10, 10],
+  "components": ["Sprite", "UITransform", "ParticleController"],
+  "script": "assets/scripts/gameplay/ParticleController.ts",
+  "properties": {
+    "particleSprite": "Self:Sprite",
+    "useDustPalette": false
+  }
+}

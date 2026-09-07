@@ -1,67 +1,59 @@
 # overhang-cocos
 
-Neon Stack game - Cocos Creator implementation of the crash tower stacking game.
+Neon Stack is a Cocos Creator 3.8.x tower-stacking crash game organized with the **aztecplinko** manager/controller/service architecture pattern.
 
-## Included project files
+## Project layout
 
-- Scene blueprint: `assets/scenes/GameScene.scene`
-- Prefab specs:
-  - `assets/prefabs/Block.prefab`
-  - `assets/prefabs/Swing.prefab`
-  - `assets/prefabs/Debris.prefab`
-  - `assets/prefabs/Particle.prefab`
-  - `assets/prefabs/ResultBanner.prefab`
-  - `assets/prefabs/ControlBar.prefab`
-- Scripts:
-  - `assets/scripts/GameManager.ts`
-  - `assets/scripts/CameraController.ts`
-  - `assets/scripts/PhysicsSimulator.ts`
-  - `assets/scripts/UIManager.ts`
-  - `assets/scripts/BackendService.ts`
-  - `assets/scripts/GameConstants.ts`
+```text
+assets/
+  ├── scenes/
+  │   ├── GameScene.scene
+  │   └── LoadingScene.scene
+  ├── prefabs/
+  │   ├── blocks/
+  │   │   ├── BlockBase.prefab
+  │   │   ├── BlockFloor.prefab
+  │   │   └── BlockSwing.prefab
+  │   ├── ui/
+  │   │   ├── HUDPanel.prefab
+  │   │   ├── ControlBar.prefab
+  │   │   ├── ResultBanner.prefab
+  │   │   └── LadderDisplay.prefab
+  │   └── effects/
+  │       ├── Debris.prefab
+  │       ├── Particle.prefab
+  │       └── DustCloud.prefab
+  ├── scripts/
+  │   ├── core/
+  │   ├── gameplay/
+  │   ├── ui/
+  │   ├── services/
+  │   ├── utils/
+  │   └── config/
+  └── resources/
+      ├── fonts/
+      ├── images/
+      └── audio/
+```
 
-## Node setup instructions (Cocos Creator)
+## Scene setup
 
-1. Create/open a **Cocos Creator 3.8.x** project and copy the `assets` folder from this repository.
-2. Set design resolution to **1080x1920 portrait** on Canvas:
-   - Fit Width: `true`
-   - Fit Height: `true`
-   - Policy: `FIXED_HEIGHT` (matching `GameScene.scene`).
-3. Build the `GameScene` hierarchy:
-   - `Canvas`
-     - `GameLayer` (world/tower, camera target container)
-     - `UILayer` (overlay UI)
-4. Add components:
-   - `GameManager` on `Canvas`
-   - `CameraController` on `Canvas` and bind `GameLayer`
-   - `PhysicsSimulator` on `Canvas`
-   - `BackendService` on `Canvas`
-   - `UIManager` on `UILayer` and bind HUD/multiplier/payout/toast/result/cashout/control nodes
-5. Create prefab nodes using the provided prefab specs:
-   - `Block`: 150x150 sprite, base/floor colors, and optional collision metadata (landing logic is script-driven)
-   - `Swing`: 150x150 block + rope child (`ROPE_LENGTH_PX=200`)
-   - `Debris`: small sprite chunks with velocity, spin, lifetime
-   - `Particle`: small neon sprite with velocity/fade
-   - `ResultBanner`: top-center win/loss label with fade/scale animation
-   - `ControlBar`: bottom bar with Bet/Difficulty steppers and Start button
-6. In `GameManager`, bind all prefabs and service/controller references in the Inspector.
-7. Wire UI button events:
-   - Start button → `GameManager.startRound`
-   - Cash out button → `GameManager.cashOut`
-   - Drop action (tap/click gameplay input) → `GameManager.tryDrop`
+- `Canvas` uses design resolution **1080 × 1920** with `fitWidth: true` and `fitHeight: true`.
+- Add `GameManager` to the Canvas/root node.
+- Add `CameraController` to `GameLayer` and bind the world containers.
+- Add `UIManager` to `UILayer` and wire `HUDController`, `ControlBarController`, `LadderController`, the result banner, and the cash-out button.
+- Bind the prefabs and container nodes exposed on `GameManager`.
 
-## Gameplay behavior implemented
+## Runtime architecture
 
-- State machine: `START → CONNECTING → SWINGING → FALLING → LANDED → RESULT`
-- Pendulum swing with intro ease-down animation
-- Gravity fall with fixed release X
-- Landing squash spring (`0.8 → 1.0`, ease-out-back)
-- Camera framing/lerp using `CAM_LERP` and `CAM_LERP_RESET`
-- Mock backend round generation by difficulty
-- Multiplier progression and pulse
-- Cash out flow and result banner (non-blocking style)
-- Loss demolition pass (top-down block pop with debris)
-- Debris and particle spawn effects
-- LocalStorage keys:
-  - `neonstack_balance`
-  - `neonstack_best`
+- `GameManager` owns the round state machine: `IDLE → CONNECTING → SWINGING → FALLING → LANDED → COLLAPSING → RESULT`.
+- `GameManager` emits `state-changed`, `block-placed`, `round-started`, and `round-ended` on a shared event bus.
+- `CameraController` and `UIManager` subscribe to the bus, while prefab controllers are injected by `GameManager` as instances are spawned.
+- `AnimationManager` centralizes all tween-based motion.
+- `StorageService` persists balance, best height, bet, and difficulty.
+- `BackendService` remains a mock round API for local/offline play.
+
+## Notes
+
+- The scene and prefab files in this repository are blueprint JSON documents describing the required Creator hierarchy and inspector bindings.
+- No automated test harness exists in this repository, so validation is performed by inspecting the generated structure and parsing the blueprint JSON files.
