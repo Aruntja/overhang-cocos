@@ -1,0 +1,10 @@
+{
+  "name": "DustCloud",
+  "size": [24, 24],
+  "components": ["Sprite", "UITransform", "ParticleController"],
+  "script": "assets/scripts/gameplay/ParticleController.ts",
+  "properties": {
+    "particleSprite": "Self:Sprite",
+    "useDustPalette": true
+  }
+}

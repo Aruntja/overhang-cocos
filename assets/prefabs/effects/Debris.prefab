@@ -1,0 +1,10 @@
+{
+  "name": "Debris",
+  "size": [24, 24],
+  "components": ["Sprite", "UITransform", "DebrisController"],
+  "script": "assets/scripts/gameplay/DebrisController.ts",
+  "properties": {
+    "debrisSprite": "Self:Sprite",
+    "lifetime": 0.45
+  }
+}

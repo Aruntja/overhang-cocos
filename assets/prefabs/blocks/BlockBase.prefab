@@ -1,0 +1,10 @@
+{
+  "name": "BlockBase",
+  "size": [150, 150],
+  "components": ["Sprite", "UITransform", "BlockController"],
+  "script": "assets/scripts/gameplay/BlockController.ts",
+  "properties": {
+    "blockSprite": "Self:Sprite",
+    "isFloor": false
+  }
+}

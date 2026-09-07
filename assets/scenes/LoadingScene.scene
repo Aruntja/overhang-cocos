@@ -1,0 +1,21 @@
+{
+  "scene": "LoadingScene",
+  "designResolution": {
+    "width": 1080,
+    "height": 1920,
+    "policy": "FIXED_HEIGHT",
+    "fitWidth": true,
+    "fitHeight": true
+  },
+  "hierarchy": {
+    "Canvas": {
+      "size": [1080, 1920],
+      "components": ["Canvas"],
+      "children": {
+        "Background": {},
+        "Logo": { "position": [0, 240, 0] },
+        "LoadingLabel": { "position": [0, -160, 0], "text": "Loading Neon Stack..." }
+      }
+    }
+  }
+}

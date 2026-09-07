@@ -1,0 +1,34 @@
+{
+  "name": "ControlBar",
+  "size": [1080, 220],
+  "components": ["Sprite", "UITransform", "ControlBarController"],
+  "script": "assets/scripts/ui/ControlBarController.ts",
+  "children": {
+    "StatsRow": {},
+    "SteppersRow": {
+      "children": {
+        "BetStepper": {
+          "children": {
+            "Label": { "components": ["Label"] }
+          }
+        },
+        "DifficultyStepper": {
+          "children": {
+            "Label": { "components": ["Label"] }
+          }
+        }
+      }
+    },
+    "ActionButton": {
+      "components": ["Button"],
+      "children": {
+        "Label": { "components": ["Label"] }
+      }
+    }
+  },
+  "properties": {
+    "betLabel": "SteppersRow/BetStepper/Label",
+    "difficultyLabel": "SteppersRow/DifficultyStepper/Label",
+    "actionButton": "ActionButton:Button"
+  }
+}

@@ -1,30 +1,112 @@
 {
   "scene": "GameScene",
-  "designResolution": { "width": 1080, "height": 1920, "policy": "FIXED_HEIGHT", "fitWidth": true, "fitHeight": true },
+  "designResolution": {
+    "width": 1080,
+    "height": 1920,
+    "policy": "FIXED_HEIGHT",
+    "fitWidth": true,
+    "fitHeight": true
+  },
   "hierarchy": {
     "Canvas": {
       "size": [1080, 1920],
+      "components": ["Canvas", "GameManager"],
+      "inspector": {
+        "script": "assets/scripts/core/GameManager.ts",
+        "properties": {
+          "blocksContainer": "Canvas/GameLayer/BlocksContainer",
+          "swingContainer": "Canvas/GameLayer/SwingContainer",
+          "debrisContainer": "Canvas/GameLayer/DebrisContainer",
+          "particlesContainer": "Canvas/GameLayer/ParticlesContainer",
+          "blockBasePrefab": "assets/prefabs/blocks/BlockBase.prefab",
+          "blockFloorPrefab": "assets/prefabs/blocks/BlockFloor.prefab",
+          "blockSwingPrefab": "assets/prefabs/blocks/BlockSwing.prefab",
+          "debrisPrefab": "assets/prefabs/effects/Debris.prefab",
+          "particlePrefab": "assets/prefabs/effects/Particle.prefab",
+          "dustCloudPrefab": "assets/prefabs/effects/DustCloud.prefab",
+          "cameraController": "Canvas/GameLayer:CameraController",
+          "uiManager": "Canvas/UILayer:UIManager"
+        }
+      },
       "children": {
-        "GameLayer": { "position": [0, 0, 0], "size": [1080, 1920] },
+        "GameLayer": {
+          "position": [0, 0, 0],
+          "size": [1080, 1920],
+          "components": ["CameraController"],
+          "inspector": {
+            "script": "assets/scripts/core/CameraController.ts",
+            "properties": {
+              "gameLayer": "Canvas/GameLayer"
+            }
+          },
+          "children": {
+            "BlocksContainer": {},
+            "SwingContainer": {},
+            "DebrisContainer": {},
+            "ParticlesContainer": {}
+          }
+        },
         "UILayer": {
           "position": [0, 0, 0],
           "size": [1080, 1920],
+          "components": ["UIManager"],
+          "inspector": {
+            "script": "assets/scripts/ui/UIManager.ts",
+            "properties": {
+              "hudController": "Canvas/UILayer/TopPanel:HUDController",
+              "multiplierLabel": "Canvas/UILayer/CenterDisplay/MultiplierText:Label",
+              "payoutLabel": "Canvas/UILayer/CenterDisplay/PayoutText:Label",
+              "toastNode": "Canvas/UILayer/CenterDisplay/ToastNotification",
+              "toastLabel": "Canvas/UILayer/CenterDisplay/ToastNotification/Label:Label",
+              "controlBarController": "Canvas/UILayer/BottomPanel/ControlBar:ControlBarController",
+              "ladderController": "Canvas/UILayer/LeftPanel/LadderDisplay:LadderController",
+              "cashOutButton": "Canvas/UILayer/BottomPanel/CashOutButton:Button",
+              "resultBanner": "Canvas/UILayer/ResultBanner",
+              "resultBannerLabel": "Canvas/UILayer/ResultBanner/Message:Label"
+            }
+          },
           "children": {
-            "HUD_Left_Height": { "position": [-430, 880, 0] },
-            "HUD_Right_Balance": { "position": [430, 880, 0] },
-            "MultiplierDisplay": { "position": [0, 820, 0] },
-            "PayoutDisplay": { "position": [0, 760, 0] },
-            "Toast": { "position": [0, 250, 0] },
-            "ResultBanner": { "position": [0, 720, 0] },
-            "MultiplierLadder": { "position": [-480, 200, 0], "visibleItems": 8 },
-            "LadderControlUp": { "position": [-480, 560, 0] },
-            "LadderControlDown": { "position": [-480, -160, 0] },
-            "CashOutButton": { "position": [0, -700, 0] },
-            "ControlBar": { "position": [0, -860, 0], "height": 200 }
+            "TopPanel": {
+              "prefab": "assets/prefabs/ui/HUDPanel.prefab"
+            },
+            "CenterDisplay": {
+              "children": {
+                "MultiplierText": { "components": ["Label"], "position": [0, 820, 0] },
+                "PayoutText": { "components": ["Label"], "position": [0, 760, 0] },
+                "ToastNotification": {
+                  "position": [0, 250, 0],
+                  "components": ["Sprite", "UIOpacity"],
+                  "children": {
+                    "Label": { "components": ["Label"] }
+                  }
+                }
+              }
+            },
+            "LeftPanel": {
+              "children": {
+                "LadderDisplay": {
+                  "prefab": "assets/prefabs/ui/LadderDisplay.prefab"
+                },
+                "LadderControls": {}
+              }
+            },
+            "BottomPanel": {
+              "children": {
+                "ControlBar": {
+                  "prefab": "assets/prefabs/ui/ControlBar.prefab"
+                },
+                "CashOutButton": {
+                  "components": ["Button"]
+                }
+              }
+            },
+            "ResultBanner": {
+              "prefab": "assets/prefabs/ui/ResultBanner.prefab",
+              "active": false
+            }
           }
         }
       }
     }
-  },
-  "entryScript": "assets/scripts/GameManager.ts"
+  }
 }

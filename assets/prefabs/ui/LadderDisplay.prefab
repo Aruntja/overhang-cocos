@@ -1,0 +1,28 @@
+{
+  "name": "LadderDisplay",
+  "size": [280, 720],
+  "components": ["Sprite", "UITransform", "LadderController"],
+  "script": "assets/scripts/ui/LadderController.ts",
+  "children": {
+    "Row01": { "components": ["Label"] },
+    "Row02": { "components": ["Label"] },
+    "Row03": { "components": ["Label"] },
+    "Row04": { "components": ["Label"] },
+    "Row05": { "components": ["Label"] },
+    "Row06": { "components": ["Label"] },
+    "Row07": { "components": ["Label"] },
+    "Row08": { "components": ["Label"] }
+  },
+  "properties": {
+    "rowLabels": [
+      "Row01:Label",
+      "Row02:Label",
+      "Row03:Label",
+      "Row04:Label",
+      "Row05:Label",
+      "Row06:Label",
+      "Row07:Label",
+      "Row08:Label"
+    ]
+  }
+}
