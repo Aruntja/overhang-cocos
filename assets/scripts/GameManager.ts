@@ -209,6 +209,7 @@ export class GameManager extends Component {
     this.fallingNode.setPosition(pos.x, pos.y, 0);
     this.fallVelY = 0;
     this.fallRot = this.swingNode.angle;
+    this.fallingNode.angle = this.fallRot;
 
     this.swingNode.destroy();
     this.swingNode = null;
@@ -263,8 +264,12 @@ export class GameManager extends Component {
     if (!this.fallingNode || !this.round) return;
     const nextStep = this.currentStep + 1;
     const shouldCrash = nextStep >= this.round.collapseStep;
+    const below = this.blocks[this.blocks.length - 1];
+    const maxCenterOffset = this.blockSize * 0.9;
+    const centerOffset = Math.abs(this.fallingNode.position.x - below.worldX);
+    const isAligned = centerOffset <= maxCenterOffset;
 
-    if (shouldCrash) {
+    if (shouldCrash || !isAligned) {
       this.spawnDebrisBurst(this.fallingNode.position);
       this.fallingNode.destroy();
       this.fallingNode = null;
@@ -275,7 +280,6 @@ export class GameManager extends Component {
     const landed = this.fallingNode;
     this.fallingNode = null;
 
-    const below = this.blocks[this.blocks.length - 1];
     const targetX = landed.position.x;
     const targetY = below.worldY + this.blockSize;
     landed.setPosition(targetX, targetY, 0);
@@ -330,6 +334,7 @@ export class GameManager extends Component {
     } else {
       await new Promise<void>((resolve) => setTimeout(resolve, 750));
     }
+    await new Promise<void>((resolve) => setTimeout(resolve, 50));
     this.resetTower();
   }
 

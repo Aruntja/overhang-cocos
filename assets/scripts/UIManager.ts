@@ -50,6 +50,8 @@ export class UIManager extends Component {
     if (!this.multiplierLabel) return;
     this.multiplierLabel.string = `${mult.toFixed(2)}x`;
     if (!pulse) return;
+    Tween.stopAllByTarget(this.multiplierLabel.node);
+    this.multiplierLabel.node.setScale(new Vec3(1, 1, 1));
     tween(this.multiplierLabel.node)
       .to(0.08, { scale: new Vec3(1.25, 1.25, 1) })
       .to(0.1, { scale: new Vec3(1, 1, 1) })
