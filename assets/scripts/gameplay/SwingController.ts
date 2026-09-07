@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, UITransform, Vec3 } from 'cc';
+import { _decorator, Component, Node, UITransform } from 'cc';
 import { AnimationManager } from '../services/AnimationManager';
 import { GAME_CONSTANTS } from '../utils/Constants';
 import { DropSnapshot } from '../utils/Types';
@@ -28,9 +28,11 @@ export class SwingController extends Component {
 
   public initialize(animationManager: AnimationManager): void {
     this.animationManager = animationManager;
+    this.configureRope();
   }
 
   protected onLoad(): void {
+    this.configureRope();
     this.registrationHook?.(this);
   }
 
@@ -42,16 +44,6 @@ export class SwingController extends Component {
   public updateSwing(x: number, y: number, angleDegrees: number): void {
     this.node.setPosition(x, y, 0);
     this.node.angle = angleDegrees;
-    if (this.payloadNode) {
-      this.payloadNode.setPosition(0, -this.ropeLength, 0);
-    }
-
-    if (this.ropeNode) {
-      this.ropeNode.setPosition(0, -this.ropeLength * 0.5, 0);
-      const ropeTransform = this.ropeNode.getComponent(UITransform) ?? this.ropeNode.addComponent(UITransform);
-      ropeTransform.setContentSize(GAME_CONSTANTS.swingRopeWidth, this.ropeLength);
-      this.ropeNode.setScale(new Vec3(1, 1, 1));
-    }
   }
 
   public captureDropSnapshot(): DropSnapshot {
@@ -60,5 +52,16 @@ export class SwingController extends Component {
       y: this.node.position.y,
       angleDegrees: this.node.angle,
     };
+  }
+
+  private configureRope(): void {
+    if (this.payloadNode) {
+      this.payloadNode.setPosition(0, -this.ropeLength, 0);
+    }
+    if (this.ropeNode) {
+      this.ropeNode.setPosition(0, -this.ropeLength * 0.5, 0);
+      const ropeTransform = this.ropeNode.getComponent(UITransform) ?? this.ropeNode.addComponent(UITransform);
+      ropeTransform.setContentSize(GAME_CONSTANTS.swingRopeWidth, this.ropeLength);
+    }
   }
 }

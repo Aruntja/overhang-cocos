@@ -1,7 +1,8 @@
 {
   "name": "HUDPanel",
   "size": [1080, 240],
-  "components": ["UITransform"],
+  "components": ["UITransform", "HUDController"],
+  "script": "assets/scripts/ui/HUDController.ts",
   "children": {
     "HeightPill": {
       "components": ["Sprite", "UITransform"],
@@ -15,5 +16,9 @@
         "Label": { "components": ["Label"] }
       }
     }
+  },
+  "properties": {
+    "heightLabel": "HeightPill/Label:Label",
+    "balanceLabel": "BalancePill/Label:Label"
   }
 }

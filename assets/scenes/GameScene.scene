@@ -49,34 +49,26 @@
         "UILayer": {
           "position": [0, 0, 0],
           "size": [1080, 1920],
-          "components": ["UIManager", "HUDController"],
-          "inspectors": {
-            "UIManager": {
-              "script": "assets/scripts/ui/UIManager.ts",
-              "properties": {
-                "hudController": "Canvas/UILayer:HUDController",
-                "controlBarController": "Canvas/UILayer/BottomPanel/ControlBar:ControlBarController",
-                "ladderController": "Canvas/UILayer/LeftPanel/LadderDisplay:LadderController",
-                "cashOutButton": "Canvas/UILayer/BottomPanel/CashOutButton:Button",
-                "resultBanner": "Canvas/UILayer/ResultBanner",
-                "resultBannerLabel": "Canvas/UILayer/ResultBanner/Message:Label"
-              }
-            },
-            "HUDController": {
-              "script": "assets/scripts/ui/HUDController.ts",
-              "properties": {
-                "heightLabel": "Canvas/UILayer/TopPanel/HeightPill/Label:Label",
-                "balanceLabel": "Canvas/UILayer/TopPanel/BalancePill/Label:Label",
-                "multiplierLabel": "Canvas/UILayer/CenterDisplay/MultiplierText:Label",
-                "payoutLabel": "Canvas/UILayer/CenterDisplay/PayoutText:Label",
-                "toastNode": "Canvas/UILayer/CenterDisplay/ToastNotification",
-                "toastLabel": "Canvas/UILayer/CenterDisplay/ToastNotification/Label:Label"
-              }
+          "components": ["UIManager"],
+          "inspector": {
+            "script": "assets/scripts/ui/UIManager.ts",
+            "properties": {
+              "hudController": "Canvas/UILayer/TopPanel:HUDController",
+              "multiplierLabel": "Canvas/UILayer/CenterDisplay/MultiplierText:Label",
+              "payoutLabel": "Canvas/UILayer/CenterDisplay/PayoutText:Label",
+              "toastNode": "Canvas/UILayer/CenterDisplay/ToastNotification",
+              "toastLabel": "Canvas/UILayer/CenterDisplay/ToastNotification/Label:Label",
+              "controlBarController": "Canvas/UILayer/BottomPanel/ControlBar:ControlBarController",
+              "ladderController": "Canvas/UILayer/LeftPanel/LadderDisplay:LadderController",
+              "cashOutButton": "Canvas/UILayer/BottomPanel/CashOutButton:Button",
+              "resultBanner": "Canvas/UILayer/ResultBanner",
+              "resultBannerLabel": "Canvas/UILayer/ResultBanner/Message:Label"
             }
           },
           "children": {
             "TopPanel": {
               "prefab": "assets/prefabs/ui/HUDPanel.prefab",
+              "components": ["HUDController"],
               "children": {
                 "HeightPill": {
                   "children": {
@@ -92,12 +84,13 @@
             },
             "CenterDisplay": {
               "children": {
-                "MultiplierText": { "position": [0, 820, 0] },
-                "PayoutText": { "position": [0, 760, 0] },
+                "MultiplierText": { "components": ["Label"], "position": [0, 820, 0] },
+                "PayoutText": { "components": ["Label"], "position": [0, 760, 0] },
                 "ToastNotification": {
                   "position": [0, 250, 0],
+                  "components": ["Sprite", "UIOpacity"],
                   "children": {
-                    "Label": {}
+                    "Label": { "components": ["Label"] }
                   }
                 }
               }
@@ -148,7 +141,7 @@
               "prefab": "assets/prefabs/ui/ResultBanner.prefab",
               "active": false,
               "children": {
-                "Message": {}
+                "Message": { "components": ["Label"] }
               }
             }
           }

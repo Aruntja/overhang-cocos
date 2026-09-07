@@ -142,16 +142,16 @@ export class GameManager extends Component {
       this.balance -= this.bet;
       deductedBet = true;
       this.storageService.setBalance(this.balance);
+      const hasSwing = await this.spawnSwing(true);
+      if (!hasSwing) {
+        throw new Error('Unable to create swing');
+      }
       this.eventBus.emit(GAME_EVENTS.roundStarted, {
         difficulty: this.difficulty,
         bet: this.bet,
         balance: this.balance,
         ladder: this.roundData.multipliers,
       });
-      const hasSwing = await this.spawnSwing(true);
-      if (!hasSwing) {
-        throw new Error('Unable to create swing');
-      }
       this.soundManager.play('round-start');
       this.transitionTo(GAME_STATES.SWINGING);
     } catch (_error) {
@@ -262,7 +262,7 @@ export class GameManager extends Component {
     if (!belowBlock) return;
     const centerOffset = Math.abs(this.activeFall.body.x - belowBlock.model.x);
     const maxCenterOffset = GAME_CONSTANTS.blockSize * GAME_CONSTANTS.collisionAlignmentFraction;
-    const shouldCollapse = nextHeight > this.roundData.collapseStep || centerOffset > maxCenterOffset;
+    const shouldCollapse = nextHeight >= this.roundData.collapseStep || centerOffset > maxCenterOffset;
 
     if (shouldCollapse) {
       this.spawnDebrisBurst(this.activeFall.controller.node.position.clone());

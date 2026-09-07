@@ -1,7 +1,7 @@
 {
   "name": "ResultBanner",
   "size": [560, 180],
-  "components": ["Sprite", "UITransform", "Label", "UIOpacity"],
+  "components": ["Sprite", "UITransform", "UIOpacity"],
   "children": {
     "Message": { "components": ["Label"] }
   },

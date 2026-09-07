@@ -20,9 +20,25 @@ interface UIActions {
 
 @ccclass('UIManager')
 export class UIManager extends Component {
-  /** Top HUD controller for balance, height, multiplier, and toast rendering. */
+  /** Top HUD controller for balance and height rendering. */
   @property(HUDController)
   public hudController: HUDController | null = null;
+
+  /** Center-display multiplier label. */
+  @property(Label)
+  public multiplierLabel: Label | null = null;
+
+  /** Center-display payout label. */
+  @property(Label)
+  public payoutLabel: Label | null = null;
+
+  /** Toast wrapper node shown for round messaging. */
+  @property(Node)
+  public toastNode: Node | null = null;
+
+  /** Label rendered inside the toast wrapper. */
+  @property(Label)
+  public toastLabel: Label | null = null;
 
   /** Bottom control bar controller used for bet and difficulty input. */
   @property(ControlBarController)
@@ -62,7 +78,6 @@ export class UIManager extends Component {
 
   public initialize(bus: GameEventBus, storageService: StorageService, animationManager: AnimationManager): void {
     this.animationManager = animationManager;
-    this.hudController?.initialize(animationManager);
     this.uiModel = {
       ...this.uiModel,
       balance: storageService.getBalance(),
@@ -100,7 +115,11 @@ export class UIManager extends Component {
   }
 
   public showToast(message: string): void {
-    this.hudController?.showToast(message);
+    if (!this.toastNode || !this.toastLabel || !this.animationManager) return;
+    this.toastNode.active = true;
+    this.toastLabel.string = message;
+    const opacity = this.toastNode.getComponent(UIOpacity) ?? this.toastNode.addComponent(UIOpacity);
+    this.animationManager.animateToast(this.toastNode, opacity);
   }
 
   public setDifficulty(difficulty: DifficultyKey): void {
@@ -140,7 +159,7 @@ export class UIManager extends Component {
       canCashOut: true,
     };
     this.refreshAll();
-    this.hudController?.pulseMultiplier();
+    this.pulseMultiplier();
   }
 
   private async handleRoundEnded(payload: RoundEndedPayload): Promise<void> {
@@ -152,11 +171,19 @@ export class UIManager extends Component {
 
   private refreshAll(): void {
     this.hudController?.updateDisplay(this.uiModel);
+    if (this.multiplierLabel) this.multiplierLabel.string = `${this.uiModel.multiplier.toFixed(2)}x`;
+    if (this.payoutLabel) this.payoutLabel.string = `Payout ${this.uiModel.payout.toFixed(2)}`;
     this.controlBarController?.updateDisplay(this.uiModel);
     this.ladderController?.updateDisplay(this.uiModel);
     if (this.cashOutButton) {
       this.cashOutButton.node.active = this.uiModel.canCashOut;
       this.cashOutButton.interactable = this.uiModel.canCashOut;
+    }
+  }
+
+  private pulseMultiplier(): void {
+    if (this.multiplierLabel?.node && this.animationManager) {
+      this.animationManager.pulse(this.multiplierLabel.node);
     }
   }
 
