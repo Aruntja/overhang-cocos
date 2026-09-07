@@ -86,6 +86,7 @@ export class GameManager extends Component {
   private currentMultiplier = 1;
   private activeSwing: SwingController | null = null;
   private activeFall: { controller: BlockController; body: FallingBody } | null = null;
+  private isResolvingLanding = false;
   private stackBlocks: Array<{ controller: BlockController; model: StackBlockModel }> = [];
 
   protected onLoad(): void {
@@ -172,6 +173,7 @@ export class GameManager extends Component {
 
     fallingBlock.setBlockPosition(snapshot.x, snapshot.y);
     fallingBlock.node.angle = snapshot.angleDegrees;
+    this.isResolvingLanding = false;
     this.activeFall = {
       controller: fallingBlock,
       body: {
@@ -241,12 +243,13 @@ export class GameManager extends Component {
   }
 
   private async detectLanding(): Promise<void> {
-    if (!this.activeFall) return;
+    if (!this.activeFall || this.isResolvingLanding) return;
     const belowBlock = this.stackBlocks[this.stackBlocks.length - 1];
     if (!belowBlock) return;
     const landingY = belowBlock.model.y + GAME_CONSTANTS.blockSize;
     if (this.activeFall.body.y > landingY) return;
 
+    this.isResolvingLanding = true;
     this.activeFall.body.y = landingY;
     this.activeFall.controller.setBlockPosition(this.activeFall.body.x, landingY);
     this.transitionTo(GAME_STATES.LANDED);
@@ -373,6 +376,7 @@ export class GameManager extends Component {
     this.roundData = null;
     this.currentHeight = 0;
     this.currentMultiplier = 1;
+    this.isResolvingLanding = false;
     this.activeSwing = null;
     this.activeFall = null;
     this.cameraController?.reset();

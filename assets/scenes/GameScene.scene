@@ -67,20 +67,7 @@
           },
           "children": {
             "TopPanel": {
-              "prefab": "assets/prefabs/ui/HUDPanel.prefab",
-              "components": ["HUDController"],
-              "children": {
-                "HeightPill": {
-                  "children": {
-                    "Label": {}
-                  }
-                },
-                "BalancePill": {
-                  "children": {
-                    "Label": {}
-                  }
-                }
-              }
+              "prefab": "assets/prefabs/ui/HUDPanel.prefab"
             },
             "CenterDisplay": {
               "children": {
@@ -98,8 +85,7 @@
             "LeftPanel": {
               "children": {
                 "LadderDisplay": {
-                  "prefab": "assets/prefabs/ui/LadderDisplay.prefab",
-                  "components": ["LadderController"]
+                  "prefab": "assets/prefabs/ui/LadderDisplay.prefab"
                 },
                 "LadderControls": {}
               }
@@ -107,30 +93,7 @@
             "BottomPanel": {
               "children": {
                 "ControlBar": {
-                  "prefab": "assets/prefabs/ui/ControlBar.prefab",
-                  "components": ["ControlBarController"],
-                  "children": {
-                    "StatsRow": {},
-                    "SteppersRow": {
-                      "children": {
-                        "BetStepper": {
-                          "children": {
-                            "Label": {}
-                          }
-                        },
-                        "DifficultyStepper": {
-                          "children": {
-                            "Label": {}
-                          }
-                        }
-                      }
-                    },
-                    "ActionButton": {
-                      "children": {
-                        "Label": {}
-                      }
-                    }
-                  }
+                  "prefab": "assets/prefabs/ui/ControlBar.prefab"
                 },
                 "CashOutButton": {
                   "components": ["Button"]
@@ -139,10 +102,7 @@
             },
             "ResultBanner": {
               "prefab": "assets/prefabs/ui/ResultBanner.prefab",
-              "active": false,
-              "children": {
-                "Message": { "components": ["Label"] }
-              }
+              "active": false
             }
           }
         }
