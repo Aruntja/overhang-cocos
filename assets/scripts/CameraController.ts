@@ -39,7 +39,8 @@ export class CameraController extends Component {
   }
 
   public worldToLayerY(worldY: number): number {
-    return worldY + this.targetY;
+    if (!this.gameLayer) return worldY;
+    return worldY - this.gameLayer.position.y;
   }
 
   public createLayerPosition(x: number, y: number): Vec3 {

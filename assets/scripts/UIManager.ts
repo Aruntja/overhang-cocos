@@ -27,6 +27,17 @@ export class UIManager extends Component {
     }
   }
 
+  public setRoundConfigLocked(lock: boolean): void {
+    if (!this.controlBar) return;
+    const names = new Set(['BetStepper', 'DifficultyStepper', 'StartButton']);
+    const queue: Node[] = [this.controlBar];
+    while (queue.length > 0) {
+      const node = queue.shift()!;
+      if (names.has(node.name)) node.pauseSystemEvents(lock);
+      queue.push(...node.children);
+    }
+  }
+
   public updateHeight(height: number): void {
     if (this.heightLabel) this.heightLabel.string = `Height ${height}`;
   }

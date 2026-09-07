@@ -131,6 +131,7 @@ export class GameManager extends Component {
     this.uiManager?.updateMultiplier(1);
     this.uiManager?.updatePayout(this.bet);
     this.uiManager?.setCashOutVisible(false);
+    this.uiManager?.setRoundConfigLocked(false);
     this.cameraController?.resetToWorldY(0);
   }
 
@@ -156,6 +157,8 @@ export class GameManager extends Component {
       this.balance -= this.bet;
       this.persistBalance();
       this.uiManager?.updateBalance(this.balance);
+      this.uiManager?.lockControls(false);
+      this.uiManager?.setRoundConfigLocked(true);
       this.spawnSwing(true);
       this.state = GameState.SWINGING;
     } catch (_error) {
@@ -167,6 +170,8 @@ export class GameManager extends Component {
 
   private spawnSwing(withIntro: boolean): void {
     if (!this.gameLayer || !this.swingPrefab) return;
+    if (this.swingNode?.isValid) this.swingNode.destroy();
+    this.swingNode = null;
     const top = this.blocks[this.blocks.length - 1];
     const targetY = top.worldY + GAME_CONSTANTS.SWING_GAP_ABOVE;
 
@@ -211,10 +216,16 @@ export class GameManager extends Component {
     }
 
     if (this.state === GameState.FALLING && this.fallingNode) {
-      this.fallVelY += GAME_CONSTANTS.GRAVITY * dt;
-      const p = this.fallingNode.position;
-      this.fallingNode.setPosition(p.x, p.y - this.fallVelY * dt, 0);
-      this.fallRot *= 0.88;
+      const fallState = {
+        pos: this.fallingNode.position.clone(),
+        velY: this.fallVelY,
+        rotZ: this.fallRot,
+        squash: 1,
+      };
+      this.physics.stepFall(fallState, dt);
+      this.fallVelY = fallState.velY;
+      this.fallRot = fallState.rotZ;
+      this.fallingNode.setPosition(fallState.pos.x, fallState.pos.y, 0);
       this.fallingNode.angle = this.fallRot;
 
       const landingY = this.blocks[this.blocks.length - 1].worldY + this.blockSize;
@@ -289,6 +300,7 @@ export class GameManager extends Component {
 
   private async finishRound(win: boolean, payout = 0): Promise<void> {
     this.state = GameState.RESULT;
+    this.round = null;
 
     if (!win) {
       await this.demolishTower();
@@ -296,6 +308,7 @@ export class GameManager extends Component {
 
     await this.uiManager?.showResult(win, payout);
     this.uiManager?.setCashOutVisible(false);
+    this.uiManager?.setRoundConfigLocked(false);
     this.uiManager?.lockControls(false);
     this.resetTower();
   }
