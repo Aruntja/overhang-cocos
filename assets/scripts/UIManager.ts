@@ -19,9 +19,12 @@ export class UIManager extends Component {
 
   public lockControls(lock: boolean): void {
     if (!this.controlBar) return;
-    this.controlBar.getComponentsInChildren(Node).forEach((n) => {
-      n.pauseSystemEvents(lock);
-    });
+    const queue: Node[] = [this.controlBar];
+    while (queue.length > 0) {
+      const node = queue.shift()!;
+      node.pauseSystemEvents(lock);
+      queue.push(...node.children);
+    }
   }
 
   public updateHeight(height: number): void {
@@ -78,7 +81,11 @@ export class UIManager extends Component {
   }
 
   public async showResult(win: boolean, amount: number): Promise<void> {
-    if (!this.resultBanner || !this.resultBannerLabel) return;
+    if (!this.resultBanner || !this.resultBannerLabel) {
+      this.showToast(win ? `WIN +${amount.toFixed(2)}` : 'BUST');
+      await new Promise<void>((resolve) => setTimeout(resolve, 750));
+      return;
+    }
     const opacity = this.resultBanner.getComponent(UIOpacity) || this.resultBanner.addComponent(UIOpacity);
     opacity.opacity = 0;
     this.resultBanner.active = true;

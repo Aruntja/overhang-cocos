@@ -110,6 +110,11 @@ export class GameManager extends Component {
   private resetTower(): void {
     if (!this.gameLayer) return;
     this.gameLayer.removeAllChildren();
+    this.swingNode = null;
+    this.fallingNode = null;
+    this.fallVelY = 0;
+    this.fallRot = 0;
+    this.squashTime = 0;
     this.blocks = [];
     this.currentStep = 0;
     this.currentMultiplier = 1;
@@ -132,22 +137,32 @@ export class GameManager extends Component {
   public async startRound(): Promise<void> {
     if (!this.backend || !this.physics || !this.gameLayer) return;
     if (this.state !== GameState.START && this.state !== GameState.RESULT) return;
+    if (!this.swingPrefab) {
+      this.uiManager?.showToast('Swing prefab is missing');
+      return;
+    }
     if (this.bet > this.balance) {
       this.uiManager?.showToast('Insufficient balance');
       return;
     }
 
+    const priorState = this.state;
     this.state = GameState.CONNECTING;
     this.uiManager?.lockControls(true);
     this.uiManager?.showToast('Connecting...');
-    await this.backend.connect();
-
-    this.round = this.backend.createRound(this.difficulty);
-    this.balance -= this.bet;
-    this.persistBalance();
-    this.uiManager?.updateBalance(this.balance);
-    this.spawnSwing(true);
-    this.state = GameState.SWINGING;
+    try {
+      await this.backend.connect();
+      this.round = this.backend.createRound(this.difficulty);
+      this.balance -= this.bet;
+      this.persistBalance();
+      this.uiManager?.updateBalance(this.balance);
+      this.spawnSwing(true);
+      this.state = GameState.SWINGING;
+    } catch (_error) {
+      this.state = priorState === GameState.RESULT ? GameState.START : priorState;
+      this.uiManager?.lockControls(false);
+      this.uiManager?.showToast('Connection failed');
+    }
   }
 
   private spawnSwing(withIntro: boolean): void {
@@ -282,7 +297,7 @@ export class GameManager extends Component {
     await this.uiManager?.showResult(win, payout);
     this.uiManager?.setCashOutVisible(false);
     this.uiManager?.lockControls(false);
-    this.state = GameState.START;
+    this.resetTower();
   }
 
   private async demolishTower(): Promise<void> {

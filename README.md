@@ -4,21 +4,21 @@ Neon Stack game - Cocos Creator implementation of the crash tower stacking game.
 
 ## Included project files
 
-- Scene blueprint: `/home/runner/work/overhang-cocos/overhang-cocos/assets/scenes/GameScene.scene`
+- Scene blueprint: `assets/scenes/GameScene.scene`
 - Prefab specs:
-  - `/home/runner/work/overhang-cocos/overhang-cocos/assets/prefabs/Block.prefab`
-  - `/home/runner/work/overhang-cocos/overhang-cocos/assets/prefabs/Swing.prefab`
-  - `/home/runner/work/overhang-cocos/overhang-cocos/assets/prefabs/Debris.prefab`
-  - `/home/runner/work/overhang-cocos/overhang-cocos/assets/prefabs/Particle.prefab`
-  - `/home/runner/work/overhang-cocos/overhang-cocos/assets/prefabs/ResultBanner.prefab`
-  - `/home/runner/work/overhang-cocos/overhang-cocos/assets/prefabs/ControlBar.prefab`
+  - `assets/prefabs/Block.prefab`
+  - `assets/prefabs/Swing.prefab`
+  - `assets/prefabs/Debris.prefab`
+  - `assets/prefabs/Particle.prefab`
+  - `assets/prefabs/ResultBanner.prefab`
+  - `assets/prefabs/ControlBar.prefab`
 - Scripts:
-  - `/home/runner/work/overhang-cocos/overhang-cocos/assets/scripts/GameManager.ts`
-  - `/home/runner/work/overhang-cocos/overhang-cocos/assets/scripts/CameraController.ts`
-  - `/home/runner/work/overhang-cocos/overhang-cocos/assets/scripts/PhysicsSimulator.ts`
-  - `/home/runner/work/overhang-cocos/overhang-cocos/assets/scripts/UIManager.ts`
-  - `/home/runner/work/overhang-cocos/overhang-cocos/assets/scripts/BackendService.ts`
-  - `/home/runner/work/overhang-cocos/overhang-cocos/assets/scripts/GameConstants.ts`
+  - `assets/scripts/GameManager.ts`
+  - `assets/scripts/CameraController.ts`
+  - `assets/scripts/PhysicsSimulator.ts`
+  - `assets/scripts/UIManager.ts`
+  - `assets/scripts/BackendService.ts`
+  - `assets/scripts/GameConstants.ts`
 
 ## Node setup instructions (Cocos Creator)
 
