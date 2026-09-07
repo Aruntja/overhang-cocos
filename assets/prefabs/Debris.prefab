@@ -1,0 +1,10 @@
+{
+  "name": "Debris",
+  "size": [24, 24],
+  "components": ["Sprite", "UITransform"],
+  "properties": {
+    "velocity": [0, 0],
+    "rotationSpeed": 0,
+    "lifetime": 2.2
+  }
+}

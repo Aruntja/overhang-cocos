@@ -1,0 +1,6 @@
+{
+  "name": "ResultBanner",
+  "size": [560, 180],
+  "components": ["Sprite", "Label", "UIOpacity"],
+  "animations": ["fade_scale_in_out"]
+}
